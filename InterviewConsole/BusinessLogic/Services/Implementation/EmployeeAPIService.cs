@@ -28,7 +28,7 @@ namespace InterviewConsole.BusinessLogic.Services.Implementation
             }
             catch (Exception ex)
             {
-                throw new FaultException("Error enabling/disabling employee: " + ex.Message);
+                Console.WriteLine("Error enabling/disabling employee: " + ex.Message);
             }
         }
 
@@ -44,7 +44,7 @@ namespace InterviewConsole.BusinessLogic.Services.Implementation
             }
             catch(Exception ex)
             {
-                throw new FaultException("Error getting employees: " + ex.Message);
+                Console.WriteLine("Error getting employees: " + ex.Message);
             }
             return employees;
         }
@@ -60,7 +60,7 @@ namespace InterviewConsole.BusinessLogic.Services.Implementation
             }
             catch (Exception ex)
             {
-                throw new FaultException("Error getting employee by ID: " + ex.Message);
+                Console.WriteLine("Error getting employee by ID: " + ex.Message);
             }
             return employee;
         }

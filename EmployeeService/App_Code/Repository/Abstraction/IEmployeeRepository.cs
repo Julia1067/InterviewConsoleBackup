@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService
 {
-    internal interface IEmployeeRepository
+    public interface IEmployeeRepository
     {
         Task<Employee> GetEmployeeByIDAsync(int employeeID);
         Task UpdateEmployeeAsync(Employee employee);

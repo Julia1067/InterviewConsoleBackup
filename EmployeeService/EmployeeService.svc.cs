@@ -1,7 +1,9 @@
 ﻿using EmployeeService.App_Code.BusinessLogic.Abstraction;
 using EmployeeService.App_Code.BusinessLogic.Implementation;
+using System;
 using System.Configuration;
 using System.IO;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
 
@@ -24,21 +26,42 @@ namespace EmployeeService
 
         public async Task<Stream> GetEmployeeById(int id)
         {
-            var result = await _manager.GetEmployeeByIDAsync(id);
-            return result;
+            try
+            {
+                var result = await _manager.GetEmployeeByIDAsync(id);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException("Error getting employee by ID: " + ex.Message);
+            }
         }
 
         public async Task EnableEmployee(int id, int enable)
         {
-            await _manager.EnableEmployeeAsync(id, enable);
+            try
+            {
+                await _manager.EnableEmployeeAsync(id, enable);
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException("Error enabling employee: " + ex.Message);
+            }
         }
 
         public async Task<Stream> GetEmployees()
         {
-            var result = await _manager.GetAllAsync();
-            return result;
+            try
+            {
+                var result = await _manager.GetAllAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException("Error getting employees: " + ex.Message);
+            }
         }
     }
 
-      
+
 }

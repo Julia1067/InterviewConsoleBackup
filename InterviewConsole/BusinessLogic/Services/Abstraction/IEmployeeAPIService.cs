@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace InterviewConsole.BusinessLogic.Services.Abstraction
 {
-    internal interface IEmployeeAPIService
+    public interface IEmployeeAPIService
     {
         Task<Employee> GetEmployeeByIDAsync(int employeeID);
         Task EnableEmployeeAsync(int employeeID, int enable);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService
 {
-    internal class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly string connString;
 
@@ -30,7 +30,7 @@ namespace EmployeeService
                 {
                     cmd.Parameters.AddWithValue("@employeeId", employee.ID);
                     cmd.Parameters.AddWithValue("@name", employee.Name);
-                    cmd.Parameters.AddWithValue("@managerId", employee.ManagerID);
+                    cmd.Parameters.AddWithValue("@managerId", (object)employee.ManagerID ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@isEnabled", employee.IsEnabled);
 
                     await cmd.ExecuteNonQueryAsync();

@@ -4,26 +4,32 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
 namespace InterviewConsole.BusinessLogic.Services.Implementation
 {
-    internal class EmployeeAPIService : IEmployeeAPIService
+    public class EmployeeAPIService : IEmployeeAPIService
     {
         private readonly string _baseUrl;
-        private readonly HttpClient _client;
-        internal EmployeeAPIService()
+        private static readonly HttpClient _client = new HttpClient();
+        public EmployeeAPIService()
         {
-            _client = new HttpClient();
             _baseUrl = ConfigurationManager.AppSettings["ServiceBaseUrl"];
         }
         public async Task EnableEmployeeAsync(int employeeID, int enable)
         {
-            string url = $"{_baseUrl}/EnableEmployee?id={employeeID}&enable={enable}";
-            await _client.PutAsync(url, null);
+            try
+            {
+                string url = $"{_baseUrl}/EnableEmployee?id={employeeID}&enable={enable}";
+                var response = await _client.PutAsync(url, null);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException("Error enabling/disabling employee: " + ex.Message);
+            }
         }
 
         public async Task<List<Employee>> GetEmployeesAsync()
@@ -38,17 +44,25 @@ namespace InterviewConsole.BusinessLogic.Services.Implementation
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex);
+                throw new FaultException("Error getting employees: " + ex.Message);
             }
             return employees;
         }
 
         public async Task<Employee> GetEmployeeByIDAsync(int employeeID)
         {
-            string url = $"{_baseUrl}/GetEmployeeById?id={employeeID}";
-            string json = await _client.GetStringAsync(url);
-            var employees = JsonConvert.DeserializeObject<Employee>(json);
-            return employees;
+            var employee = new Employee();
+            try
+            {
+                string url = $"{_baseUrl}/GetEmployeeById?id={employeeID}";
+                string json = await _client.GetStringAsync(url);
+                employee = JsonConvert.DeserializeObject<Employee>(json);
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException("Error getting employee by ID: " + ex.Message);
+            }
+            return employee;
         }
     }
 }

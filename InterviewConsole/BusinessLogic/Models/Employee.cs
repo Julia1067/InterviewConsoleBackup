@@ -2,7 +2,7 @@
 
 namespace InterviewConsole.BusinessLogic.Models
 {
-    internal class Employee
+    public class Employee
     {
         public int ID { get; set; }
 

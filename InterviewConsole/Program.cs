@@ -64,6 +64,7 @@ namespace InterviewConsole
             if(!int.TryParse(choice, out int id))
             {
                 Console.WriteLine("Invalid ID");
+                return;
             }
             var employee = await _apiService.GetEmployeeByIDAsync(id);
 
